@@ -7,16 +7,19 @@
 </head>
 <body>
     <h1>Scoundrel</h1>
-    <button onclick="newGame()">New Game</button>
 
-    <ul>
-        <li><input type="checkbox" id="jokerCheckbox"><label for="jokerCheckbox">Jokers</label></li>
-    </ul>
+    <div id="startScreen">
+        <button onclick="newGame()">New Game</button>
 
+        <ul>
+            <li><input type="checkbox" id="jokerCheckbox"><label for="jokerCheckbox">Jokers</label></li>
+        </ul>
 
-    <h3>How to play</h3>
-    
-    <iframe width="425" height="240" src="https://www.youtube.com/embed/7fP-QLtWQZs" title="How to Play Scoundrel: a SOLO DUNGEON CRAWL with a deck of cards!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
+        <h3>How to play</h3>
+        <iframe width="425" height="240" src="https://www.youtube.com/embed/7fP-QLtWQZs" title="How to Play Scoundrel: a SOLO DUNGEON CRAWL with a deck of cards!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div id="gameScreen" style="display: none;">
+        <img id="deck" src="https://deckofcardsapi.com/static/img/back.png" onclick="checkRemaining()">
+    </div>
 </body>
 </html>
