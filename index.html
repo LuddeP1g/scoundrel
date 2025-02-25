@@ -20,12 +20,13 @@
     </div>
     
     <div id="gameScreen" style="display: none;">
+        <h2 id="healthElement">Current Health: </h2>
         <div id="activeRoom">
             <img id="deck" src="https://deckofcardsapi.com/static/img/back.png" onclick="checkRemaining()">
-            <img class="cards" id="card1" src="https://deckofcardsapi.com/static/img/back.png">
-            <img class="cards" id="card2" src="https://deckofcardsapi.com/static/img/back.png">
-            <img class="cards" id="card3" src="https://deckofcardsapi.com/static/img/back.png">
-            <img class="cards" id="card4" src="https://deckofcardsapi.com/static/img/back.png">
+            <img class="cards" id="card1" src="https://deckofcardsapi.com/static/img/back.png" onclick="selectCard(this)">
+            <img class="cards" id="card2" src="https://deckofcardsapi.com/static/img/back.png" onclick="selectCard(this)">
+            <img class="cards" id="card3" src="https://deckofcardsapi.com/static/img/back.png" onclick="selectCard(this)">
+            <img class="cards" id="card4" src="https://deckofcardsapi.com/static/img/back.png" onclick="selectCard(this)">
         </div>
         <div id="weaponZone">
             
