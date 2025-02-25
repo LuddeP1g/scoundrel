@@ -1,6 +1,8 @@
 let deckid = 0;
 let cardsLeft = 0;
 
+let cards = []
+
 
 function newGame() {
     loadGame();
@@ -13,6 +15,7 @@ async function loadGame() {
     let data = await response.json();
     deckid = data.deck_id;
     cardsLeft = data.remaining;
+    cards[0] = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
 }
 
 function checkRemaining() {
