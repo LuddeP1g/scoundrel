@@ -79,6 +79,7 @@ function selectCard(self) {
             if (health > 20) {
                 health = 20;
             }
+            cards.splice(cardnr,1)
             break;
         case "DIAMONDS":
             console.log("Diamond");
@@ -91,5 +92,6 @@ function selectCard(self) {
             console.log("club");
             break;
     }
-    document.getElementById("healthElement").innerHTML = "Current Health: " + health
+    document.getElementById("healthElement").innerHTML = "Current Health: " + health;
+    updateBoard();
 }
