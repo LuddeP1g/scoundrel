@@ -4,6 +4,7 @@ let cardsLeft = 0;
 let health = 0;
 
 let cards = [];
+let activeWeapon = {};
 
 let values = {
     "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10,
@@ -37,6 +38,10 @@ function updateBoard() {
     {
         document.getElementById("card" + i).src = cards[i-1].image;
     }
+    if(activeWeapon != null) {
+        document.getElementById("activeWeapon").src = activeWeapon.image;
+    }
+
 }
 function checkRemaining() {
     alert("Cards remaining: " + cardsLeft);
@@ -82,7 +87,8 @@ function selectCard(self) {
             cards.splice(cardnr,1)
             break;
         case "DIAMONDS":
-            console.log("Diamond");
+            activeWeapon = cards[cardnr];
+            cards.splice(cardnr,1);
             break;
         case "SPADES":
             console.log("Spade");
