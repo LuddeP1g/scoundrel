@@ -20,6 +20,6 @@ function checkRemaining() {
 }
 
 async function drawCards() {
-
+    // Draw four cards from the deck to fill the game board.
 }
 
