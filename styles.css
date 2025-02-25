@@ -4,3 +4,17 @@ body {
     margin: 0;
     padding: 0;
 }
+#activeRoom {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding-left: 10%;
+    padding-right: 10%;
+}
+#deck {
+    grid-row: span 1;
+    grid-column: span 1;
+}
+.cards {
+    grid-row: span 1;
+    grid-column: span 1;
+}
