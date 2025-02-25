@@ -24,14 +24,10 @@ async function loadGame() {
 }
 
 function updateBoard() {
-    for (let i = 0; i < cards.length; i++)
+    for (let i = 1; i <= cards.length; i++)
     {
-
+        getElementById("card" + i).src = cards[i-1].image;
     }
-    getElementById("card1").src = cards[0].image;
-    getElementById("card2").src = cards[1].image;
-    getElementById("card3").src = cards[2].image;
-    getElementById("card4").src = cards[3].image;
 }
 function checkRemaining() {
     alert("Cards remaining: " + cardsLeft);
