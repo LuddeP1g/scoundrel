@@ -37,6 +37,8 @@ async function loadGame() {
 
 function updateBoard() {
     const cardElements = document.getElementsByClassName("cards");
+    let weaponElement = document.getElementById("activeWeapon");
+    let enemyElement = document.getElementById("attackedEnemy");
     console.log(cardElements.length)
     for (let i = 1; i <= cardElements.length; i++) {
         document.getElementById("card" + i).style.display = "none";
@@ -46,11 +48,15 @@ function updateBoard() {
         document.getElementById("card" + i).src = cards[i-1].image;
         document.getElementById("card" + i).style.display = "block";
     }
+    weaponElement.style.display = "none";
+    enemyElement.style.display = "none";
     if(activeWeapon != null) {
-        document.getElementById("activeWeapon").src = activeWeapon.image;
+        weaponElement.style.display = "block";
+        weaponElement.src = activeWeapon.image;
     }
     if(activeEnemy != null) {
-        document.getElementById("attackedEnemy").src = activeEnemy.image;
+        enemyElement.style.display = "block";
+        enemyElement.src = activeEnemy.image;
     }
 
 }
@@ -99,6 +105,7 @@ function selectCard(self) {
             break;
 
         case "DIAMONDS":
+            document.getElementById("weapon").checked = true;
             activeWeapon = cards[cardnr];
             cards.splice(cardnr,1);
             activeEnemy = {};
@@ -127,8 +134,8 @@ function attacked(nummer) {
     } 
     else {
         activeEnemy = nummer;
-        if (activeEnemy.value > activeWeapon.value) {
-            health -= activeEnemy.value-activeWeapon.value;
+        if (values[activeEnemy.value] > activeWeapon.value) {
+            health -= values[activeEnemy.value]-activeWeapon.value;
         }
     }
     if (health <= 0) {
