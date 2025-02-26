@@ -39,7 +39,6 @@ function updateBoard() {
     const cardElements = document.getElementsByClassName("cards");
     let weaponElement = document.getElementById("activeWeapon");
     let enemyElement = document.getElementById("attackedEnemy");
-    console.log(cardElements.length)
     for (let i = 1; i <= cardElements.length; i++) {
         document.getElementById("card" + i).style.display = "none";
     }
@@ -77,6 +76,9 @@ async function drawCards() {
 
 
 function selectCard(self) {
+    if (cards.length === 1) {
+        return;
+    } 
     let cardnr = 0;
     switch (self.id) {
         case "card1":
@@ -122,20 +124,20 @@ function selectCard(self) {
             break;
     }
     document.getElementById("healthElement").innerHTML = "Current Health: " + health;
-    if(cards.length === 1) {
+    if(cards.length <= 1) {
         drawCards();
     }
     updateBoard();
 }
 
 function attacked(nummer) {
-    if (!document.getElementById("weapon").checked || nummer.value > activeEnemy.value && activeWeapon != null) {
+    if (!document.getElementById("weapon").checked || values[nummer.value] > values[activeEnemy.value] && activeWeapon != null || activeWeapon === null) {
         health -= values[nummer.value];
     } 
     else {
         activeEnemy = nummer;
-        if (values[activeEnemy.value] > activeWeapon.value) {
-            health -= values[activeEnemy.value]-activeWeapon.value;
+        if (values[activeEnemy.value] > values[activeWeapon.value]) {
+            health -= values[activeEnemy.value]-values[activeWeapon.value];
         }
     }
     if (health <= 0) {
