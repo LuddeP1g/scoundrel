@@ -4,7 +4,9 @@ let cardsLeft = 0;
 let health = 0;
 
 let cards = [];
+
 let activeWeapon = {};
+let activeEnemy = {};
 
 let values = {
     "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10,
@@ -34,12 +36,21 @@ async function loadGame() {
 }
 
 function updateBoard() {
+    const cardElements = document.getElementsByClassName("cards");
+    console.log(cardElements.length)
+    for (let i = 1; i <= cardElements.length; i++) {
+        document.getElementById("card" + i).style.display = "none";
+    }
     for (let i = 1; i <= cards.length; i++)
     {
         document.getElementById("card" + i).src = cards[i-1].image;
+        document.getElementById("card" + i).style.display = "block";
     }
     if(activeWeapon != null) {
         document.getElementById("activeWeapon").src = activeWeapon.image;
+    }
+    if(activeEnemy != null) {
+        document.getElementById("attackedEnemy").src = activeEnemy.image;
     }
 
 }
@@ -86,18 +97,45 @@ function selectCard(self) {
             }
             cards.splice(cardnr,1)
             break;
+
         case "DIAMONDS":
             activeWeapon = cards[cardnr];
             cards.splice(cardnr,1);
+            activeEnemy = {};
             break;
+
         case "SPADES":
-            console.log("Spade");
+            attacked(cards[cardnr]);
+            cards.splice(cardnr,1);
             break;
 
         case "CLUBS":
-            console.log("club");
+            attacked(cards[cardnr]);
+            cards.splice(cardnr,1);
             break;
     }
     document.getElementById("healthElement").innerHTML = "Current Health: " + health;
+    if(cards.length === 1) {
+        drawCards();
+    }
     updateBoard();
+}
+
+function attacked(nummer) {
+    if (!document.getElementById("weapon").checked || nummer.value > activeEnemy.value && activeWeapon != null) {
+        health -= values[nummer.value];
+    } 
+    else {
+        activeEnemy = nummer;
+        if (activeEnemy.value > activeWeapon.value) {
+            health -= activeEnemy.value-activeWeapon.value;
+        }
+    }
+    if (health <= 0) {
+        gameOver();
+    }
+}
+
+function gameOver() {
+    console.log("Game Over")
 }
