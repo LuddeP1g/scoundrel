@@ -44,12 +44,13 @@ function updateBoard() {
     let weaponElement = document.getElementById("activeWeapon");
     let enemyElement = document.getElementById("attackedEnemy");
     for (let i = 1; i <= cardElements.length; i++) {
-        document.getElementById("card" + i).style.display = "none";
+       // document.getElementById("card" + i).style.display = "none";
+       document.getElementById("card" + i).src = "https://deckofcardsapi.com/static/img/back.png";
     }
     for (let i = 1; i <= cards.length; i++)
     {
         document.getElementById("card" + i).src = cards[i-1].image;
-        document.getElementById("card" + i).style.display = "block";
+       // document.getElementById("card" + i).style.display = "block";
     }
     weaponElement.style.display = "none";
     enemyElement.style.display = "none";
@@ -197,28 +198,25 @@ function gameOver() {
 
 async function run() {
     document.getElementById("run").style.display = "none";
-    if (runTimer === 0) {
-        
-        let lengde = cards.length;
-        for (let i = 0; i<lengde; i++) {
-            runCards.push(cards[cards.length - 1]);
-            cards.splice(cards.length - 1, 1);            
-        }
-
-        if (cardsLeft < 1) {
-            cards[0] = runCards[0];
-            runCards.slice(0,1);
-        }
-        else{
-            response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
-            let carddata = await response.json();
-            cardsLeft = carddata.remaining;
-            cards[0] = carddata.cards[0];
-        }   
-        drawCards();
-        runTimer = 2;
-
-        updateBoard();
+       
+    let lengde = cards.length;
+    for (let i = 0; i<lengde; i++) {
+        runCards.push(cards[cards.length - 1]);
+        cards.splice(cards.length - 1, 1);            
     }
+
+    if (cardsLeft < 1) {
+        cards[0] = runCards[0];
+        runCards.slice(0,1);
+    }
+    else{
+        response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
+        let carddata = await response.json();
+        cardsLeft = carddata.remaining;
+        cards[0] = carddata.cards[0];
+    }   
+    drawCards();
+    runTimer = 2;
+    updateBoard();
     
 }
