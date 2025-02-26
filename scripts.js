@@ -8,10 +8,14 @@ let cards = [];
 let activeWeapon = {};
 let activeEnemy = {};
 
+let runCards = [];
+
 let values = {
     "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10,
     "JACK": 11, "QUEEN": 12, "KING": 13, "ACE": 14
 };
+
+let runTimer = 0;
 
 
 
@@ -64,6 +68,9 @@ function checkRemaining() {
 }
 
 async function drawCards() {
+    if (runTimer > 0) {
+        runTimer--;
+    }
     // Draw three cards from the deck to fill the game board.
     let response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=3");
     let data = await response.json();
@@ -147,4 +154,25 @@ function attacked(nummer) {
 
 function gameOver() {
     console.log("Game Over")
+}
+
+async function run() {
+    document.getElementById("run").style.display = "none";
+    if (runTimer === 0) {
+        
+        let lengde = cards.length;
+        for (let i = 0; i<lengde; i++) {
+            runCards.push(cards[-1]);
+            cards.splice(-1, 1);
+        }
+
+        response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
+        let carddata = await response.json();
+        cards[0] = carddata.cards[0];
+        drawCards();
+        runTimer = 2;
+
+        updateBoard();
+    }
+    
 }
