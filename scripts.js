@@ -131,7 +131,7 @@ function selectCard(self) {
 }
 
 function attacked(nummer) {
-    if (!document.getElementById("weapon").checked || values[nummer.value] > values[activeEnemy.value] && activeWeapon != null || activeWeapon === null) {
+    if (!document.getElementById("weapon").checked || values[nummer.value] > values[activeEnemy.value] && activeWeapon != null || activeWeapon == null) {
         health -= values[nummer.value];
     } 
     else {
