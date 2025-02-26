@@ -186,8 +186,13 @@ function attacked(nummer) {
     }
 }
 
+function win() {
+    localStorage.highScore = health;
+}
 function gameOver() {
     console.log("Game Over")
+    alert("You lost    HighScore: " + localStorage.highScore);
+    location.reload(); 
 }
 
 async function run() {
@@ -204,10 +209,12 @@ async function run() {
             cards[0] = runCards[0];
             runCards.slice(0,1);
         }
-        response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
-        let carddata = await response.json();
-        cardsLeft = carddata.remaining;
-        cards[0] = carddata.cards[0];
+        else{
+            response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
+            let carddata = await response.json();
+            cardsLeft = carddata.remaining;
+            cards[0] = carddata.cards[0];
+        }   
         drawCards();
         runTimer = 2;
 
