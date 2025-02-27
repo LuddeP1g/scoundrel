@@ -22,6 +22,8 @@ let runTimer = 0;
 function newGame() {
     loadGame();
     health = maxHealth;
+    activeWeapon = {};
+    activeEnemy = {};
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "block";
 }
@@ -35,8 +37,7 @@ async function loadGame() {
     response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
     let carddata = await response.json();
     cards[0] = carddata.cards[0];
-    activeWeapon = {};
-    activeEnemy = {};
+
 
     drawCards();
 }
@@ -175,7 +176,7 @@ function selectCard(self) {
 }
 
 function attacked(nummer) {
-    if (!document.getElementById("weapon").checked || values[nummer.value] > values[activeEnemy.value] && activeWeapon != null || activeWeapon == null) {
+    if (!document.getElementById("weapon").checked || values[nummer.value] > values[activeEnemy.value] && activeWeapon != {} || activeWeapon == {}) {
         health -= values[nummer.value];
     } 
     else {
@@ -189,12 +190,15 @@ function attacked(nummer) {
     }
 }
 
+if(localStorage.highScore == ""); {
+    localStorage.highScore = 0;
+}
+
 function win() {
     localStorage.highScore = health;
 }
 function gameOver() {
-    console.log("Game Over")
-    alert("You lost    HighScore: " + localStorage.highScore);
+    alert("You lost\nHighScore: " + localStorage.highScore + "\nYour score is the health you have after completing the game.");
     location.reload(); 
 }
 
@@ -207,11 +211,14 @@ async function run() {
         cards.splice(cards.length - 1, 1);            
     }
 
-    if (cardsLeft < 1) {
+    if (cardsLeft < 1 && runCards > 0) {
         cards[0] = runCards[0];
         runCards.slice(0,1);
     }
     else{
+        if (cardsLeft < 1 && runCards < 1) {
+            win();
+        }
         response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
         let carddata = await response.json();
         cardsLeft = carddata.remaining;
