@@ -46,12 +46,13 @@ function updateBoard() {
     let weaponElement = document.getElementById("activeWeapon");
     let enemyElement = document.getElementById("attackedEnemy");
     for (let i = 1; i <= cardElements.length; i++) {
-        document.getElementById("card" + i).style.display = "none";
+       // document.getElementById("card" + i).style.display = "none";
+       document.getElementById("card" + i).src = "https://deckofcardsapi.com/static/img/back.png";
     }
     for (let i = 1; i <= cards.length; i++)
     {
         document.getElementById("card" + i).src = cards[i-1].image;
-        document.getElementById("card" + i).style.display = "block";
+       // document.getElementById("card" + i).style.display = "block";
     }
     weaponElement.style.display = "none";
     enemyElement.style.display = "none";
@@ -66,26 +67,60 @@ function updateBoard() {
 
 }
 function checkRemaining() {
-    alert("Cards remaining: " + cardsLeft);
+    alert("Cards remaining: " + (cardsLeft+runCards.length));
 }
 
 async function drawCards() {
+
+    if(cardsLeft < 3) {
+        if (cardsLeft === 0) {
+            cards[1] = runCards[0];
+            cards[2] = runCards[1];
+            cards[3] = runCards[2];
+            runCards.splice(0,3);
+            cardsLeft = 0;
+        }
+        if (cardsLeft === 1) {
+            let response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
+            let data = await response.json();
+            cards[1] = data.cards[0];
+            cards[2] = runCards[0];
+            cards[3] = runCards[1];
+            runCards.splice(0,2);
+            cardsLeft = data.remaining;
+        }
+        if (cardsLeft === 2) {
+            let response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=2");
+            let data = await response.json();
+            cards[1] = data.cards[0];
+            cards[2] = data.cards[1];
+            cards[3] = runCards[0];
+            runCards.splice(0,1);
+            cardsLeft = data.remaining;
+        }
+    }
+    else{
+    // Draw three cards from the deck to fill the game board.
+        let response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=3");
+        let data = await response.json();
+
+        cards[1] = data.cards[0];
+        cards[2] = data.cards[1];
+        cards[3] = data.cards[2];
+        cardsLeft = data.remaining;
+    }
     if (runTimer > 0) {
         runTimer--;
+        if (runTimer === 0) {
+            document.getElementById("run").style.display = "block";
+        }
     }
-    // Draw three cards from the deck to fill the game board.
-    let response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=3");
-    let data = await response.json();
-    cards[1] = data.cards[0];
-    cards[2] = data.cards[1];
-    cards[3] = data.cards[2];
-    cardsLeft = data.remaining;
     updateBoard();
 }
 
 
 function selectCard(self) {
-    if (cards.length === 1) {
+    if (cards.length === 1 && cardsLeft) {
         return;
     } 
     let cardnr = 0;
@@ -154,27 +189,36 @@ function attacked(nummer) {
     }
 }
 
+function win() {
+    localStorage.highScore = health;
+}
 function gameOver() {
     console.log("Game Over")
+    alert("You lost    HighScore: " + localStorage.highScore);
+    location.reload(); 
 }
 
 async function run() {
     document.getElementById("run").style.display = "none";
-    if (runTimer === 0) {
-        
-        let lengde = cards.length;
-        for (let i = 0; i<lengde; i++) {
-            runCards.push(cards[-1]);
-            cards.splice(-1, 1);
-        }
+       
+    let lengde = cards.length;
+    for (let i = 0; i<lengde; i++) {
+        runCards.push(cards[cards.length - 1]);
+        cards.splice(cards.length - 1, 1);            
+    }
 
+    if (cardsLeft < 1) {
+        cards[0] = runCards[0];
+        runCards.slice(0,1);
+    }
+    else{
         response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
         let carddata = await response.json();
+        cardsLeft = carddata.remaining;
         cards[0] = carddata.cards[0];
-        drawCards();
-        runTimer = 2;
-
-        updateBoard();
-    }
+    }   
+    drawCards();
+    runTimer = 2;
+    updateBoard();
     
 }
