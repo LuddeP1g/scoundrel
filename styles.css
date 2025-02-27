@@ -83,6 +83,39 @@ iframe {
     height: 314px; /* Sikrer riktig aspect ratio */
 }
 
+/* Tilpassede radio-knapper */
+.radio-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.radio-container label {
+    text-align: center;
+    display: inline-block;
+    padding: 18px 45px;
+    border-radius: 12px;
+    background-color: #d97706;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    background-color: #ff7b00;
+    box-shadow: 0 0 15px #ff7b00;
+}
+
+/* Animasjoner */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px #ff7b00; }
+    50% { box-shadow: 0 0 20px #ff7b00; }
+    100% { box-shadow: 0 0 5px #ff7b00; }
+}
+
+
 /* Animasjoner */
 @keyframes glow {
     0% { box-shadow: 0 0 5px #ff7b00; }
