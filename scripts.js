@@ -35,6 +35,8 @@ async function loadGame() {
     response = await fetch("https://deckofcardsapi.com/api/deck/" + deckid + "/draw/?count=1");
     let carddata = await response.json();
     cards[0] = carddata.cards[0];
+    activeWeapon = {};
+    activeEnemy = {};
 
     drawCards();
 }
